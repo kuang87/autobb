@@ -1,4 +1,5 @@
 .vscode/
+.idea/
 nuclei-templates/
 nuclei-my-templates/
 __pycache__/
