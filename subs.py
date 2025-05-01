@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+from time import sleep
 from typing import List
 import os
 import random
@@ -437,10 +438,12 @@ def main_gc():
 if __name__ == "__main__":
     args = cli_args()
     try:
-        os.makedirs(glob.httprobes_savedir, exist_ok=True)
-        os.makedirs(glob.tmp_dir, exist_ok=True)
-        main()
-        main_gc()
+        while True:
+            os.makedirs(glob.httprobes_savedir, exist_ok=True)
+            os.makedirs(glob.tmp_dir, exist_ok=True)
+            main()
+            main_gc()
+            sleep(86400)
     except Exception as x:
         traceback.print_exc()
         alerter.notify(f"Error at subs.py\n{str(x)}")
