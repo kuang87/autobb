@@ -30,7 +30,7 @@ def notify(msg):
         files = {
             'file': ('full.txt', file_msg)
         }
-        response = requests.post(f"{config['host']}/_matrix/media/r0/upload", headers=headers, files=files)
+        response = requests.post(f"https://{config['host']}/_matrix/media/r0/upload", headers=headers, files=files)
 
         if response.status_code != 200:
             raise Exception(f"Ошибка загрузки файла: {response.text}")
@@ -50,7 +50,7 @@ def notify(msg):
             }
         }
 
-        return requests.post(f"https://{config['host']}/_matrix/client/r0/rooms/{roomId}/send/m.room.message/{rnumber}", json=data, headers=headers)
+        return requests.put(f"https://{config['host']}/_matrix/client/r0/rooms/{roomId}/send/m.room.message/{rnumber}", json=data, headers=headers)
 
 
 if __name__=='__main__':
