@@ -24,6 +24,10 @@ alerts:
     msg_max_size: 1000 # Larger message will be sent as a txt file
   file:
     name: "report.txt"
+  matrix:
+    host: ...
+    token: ...
+    room_id: ...
 
 
 juicer_filters:
