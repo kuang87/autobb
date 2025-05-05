@@ -3,7 +3,7 @@ import random
 from datetime import datetime
 
 config = None
-msg_max_size = 8000
+msg_max_size = 1000
 
 
 def notify(msg):
