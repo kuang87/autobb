@@ -50,7 +50,8 @@ nuclei:
   exclude_templates: []
   # exclude_templates:
     # - ./nuclei-templates/http/technologies/tech-detect.yaml
-    # - ./nuclei-templates/http/technologies/nginx/nginx-version.yaml
+    # - ./nuclei-templates/code/cves/2020/CVE-2020-13935.yaml
+    # - ./nuclei-templates/http/cves/2024/CVE-2024-9487.yaml
   cmd: [
     'nuclei', '-no-color', '-jsonl',
     #'-t', "./nuclei-my-templates",
