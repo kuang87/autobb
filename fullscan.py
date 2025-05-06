@@ -1,4 +1,6 @@
 import datetime
+from time import sleep
+
 from modules.vulns import nuclei_active
 from subs import db_get_modified, nuclei_notify
 import logging
@@ -38,28 +40,32 @@ if __name__ == "__main__":
         ]
     )
 
-    ndaysago = datetime.datetime.now() - datetime.timedelta(days=config['fullscan']['host_alive_in_days'])
-    q = {"last_alive": {"$gte": ndaysago}}
+    while True:
 
-    db_res = db['http_probes'].find(q)
+        ndaysago = datetime.datetime.now() - datetime.timedelta(days=config['fullscan']['host_alive_in_days'])
+        q = {"last_alive": {"$gte": ndaysago}}
 
-    http_probes = list(db_res)
-    random.shuffle(http_probes)
-    
-    allc = len(http_probes)
-    
-    # medium chunk size
-    chunks_num = math.ceil(allc / config['fullscan']['chunk_max'])
-    chunk_size = math.ceil(allc / chunks_num)
+        db_res = db['http_probes'].find(q)
 
-    logging.info(f"Fullscan of {len(http_probes)} with chunk medium size {chunk_size}")
-    
-    chi = 1
-    for i in range(0, allc, chunk_size):
-        logging.info(f"start chunk {chi}/{chunks_num}")
-        x = i
-        chunk = http_probes[x:x+chunk_size]
-        nuclei_hits = fullscan(chunk)
-        if len(nuclei_hits) > 0:
-            alert(nuclei_hits, chi, chunks_num)
-        chi += 1
+        http_probes = list(db_res)
+        random.shuffle(http_probes)
+
+        allc = len(http_probes)
+
+        # medium chunk size
+        chunks_num = math.ceil(allc / config['fullscan']['chunk_max'])
+        chunk_size = math.ceil(allc / chunks_num)
+
+        logging.info(f"Fullscan of {len(http_probes)} with chunk medium size {chunk_size}")
+
+        chi = 1
+        for i in range(0, allc, chunk_size):
+            logging.info(f"start chunk {chi}/{chunks_num}")
+            x = i
+            chunk = http_probes[x:x+chunk_size]
+            nuclei_hits = fullscan(chunk)
+            if len(nuclei_hits) > 0:
+                alert(nuclei_hits, chi, chunks_num)
+            chi += 1
+
+        sleep(60*60*24*7)

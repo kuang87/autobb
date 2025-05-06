@@ -46,8 +46,8 @@ def nuclei_active(nuclei_cmd_or: List[str], http_probes):
 
 
     #check only on all templates scan
-    if not '-tags' in nuclei_cmd:
-        nuclei_check_templates_count(nuclei_stderr)
+    # if not '-tags' in nuclei_cmd:
+    #     nuclei_check_templates_count(nuclei_stderr)
 
 
 def stdinwrite(http_probes, stdin):
