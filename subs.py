@@ -199,8 +199,10 @@ def nuclei_notify(nuclei_hits_new, print_func, prefix=""):
     lines = [print_func(x) for x in nuclei_hits_new]
     filters = config['alerts'].get('filter', [])
     notify_msg = "\n".join([item for item in lines if not any(re.search(regex, item) for regex in filters)])
-    if notify_msg:
+    if notify_msg and notify_msg != "\n":
         alerter.notify(prefix + notify_msg)
+    else:
+        alerter.notify(prefix + " No new changes")
 
 
 def passive_workflow(all_http_probes):
