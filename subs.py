@@ -237,7 +237,8 @@ def notify_ports(port_probes):
 
     if notify_lines:
         msg = notify_block(f"+{len(port_probes)} new ports.", notify_lines)
-        alerter.notify(msg)
+        if msg and len(msg) > 5:
+            alerter.notify(msg)
 
 
 def notify_by_weight(items: List, title_suffix, print_item_func):
@@ -245,7 +246,8 @@ def notify_by_weight(items: List, title_suffix, print_item_func):
     items.sort(key=lambda x: x['juicy_weight'], reverse=True)
     notify_msg = f"+{len(items)} {title_suffix}.\n"
     notify_msg += "\n".join([f"{i['scope']}: {print_item_func(i)}" for i in items])
-    alerter.notify(notify_msg)
+    if notify_msg and len(notify_msg) > 5:
+        alerter.notify(notify_msg)
 
 
 def new_ports_workflow(port_items):
@@ -262,7 +264,8 @@ def new_ports_workflow(port_items):
     notify_msg = "\n".join([
                                f'{x["scope"]}: {x["matched-at"]} [{x["info"]["severity"]}] {x["template-id"]} {x.get("matcher-name", "")} {x.get("extracted-results", "")}'
                                for x in nuclei_hits_new])
-    alerter.notify(notify_msg)
+    if notify_msg and len(notify_msg) > 5:
+        alerter.notify(notify_msg)
 
 
 def hosts_from_cidrs_ips(scope):
