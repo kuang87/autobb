@@ -8,6 +8,10 @@ msg_max_size = 1000
 
 def notify(msg):
     global msg_max_size
+    f = open("test_msg", 'a')
+    f.write(msg)
+    f.close()
+    return True
     if config and 'msg_max_size' in config:
         msg_max_size = config['msg_max_size']
     file_msg = None
