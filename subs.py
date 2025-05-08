@@ -199,7 +199,7 @@ def nuclei_notify(nuclei_hits_new, print_func, prefix=""):
     lines = [print_func(x) for x in nuclei_hits_new]
     filters = config['alerts'].get('filter', [])
     notify_msg = "\n".join([item for item in lines if not any(re.search(regex, item) for regex in filters)])
-    if notify_msg and notify_msg != "\n":
+    if notify_msg and len(notify_msg) > 5:
         alerter.notify(prefix + notify_msg)
     else:
         alerter.notify(prefix + " No new changes found")
