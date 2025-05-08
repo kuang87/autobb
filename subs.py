@@ -202,7 +202,7 @@ def nuclei_notify(nuclei_hits_new, print_func, prefix=""):
     if notify_msg and notify_msg != "\n":
         alerter.notify(prefix + notify_msg)
     else:
-        alerter.notify(prefix + " No new changes")
+        alerter.notify(prefix + " No new changes found")
 
 
 def passive_workflow(all_http_probes):
