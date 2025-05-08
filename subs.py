@@ -200,8 +200,10 @@ def nuclei_notify(nuclei_hits_new, print_func, prefix=""):
     filters = config['alerts'].get('filter', [])
     notify_msg = "\n".join([item for item in lines if not any(re.search(regex, item) for regex in filters)])
     if notify_msg and len(notify_msg) > 5:
+        logging.warning(f"Send message to matrix with not null results: {prefix + notify_msg}")
         alerter.notify(prefix + notify_msg)
     else:
+        logging.warning(f"Send 0 message to matrix: {prefix}")
         alerter.notify(prefix + " No new changes found")
 
 
