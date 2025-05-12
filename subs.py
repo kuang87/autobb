@@ -172,6 +172,7 @@ def sites_workflow(domains, httpx_threads=1):
     logging.info(f"{len(sites_new)} new http probes found")
 
     if len(sites_new) == 0:
+        alerter.notify("No new http probes found")
         return
 
     juicer(sites_new, http_probes_validators, scopes, config['juicer_filters'])
@@ -190,6 +191,7 @@ def sites_workflow(domains, httpx_threads=1):
                  "interaction", "scope", "curl-command"]
     index_fields = ["template-id", "matcher-name", "matched-at"]
     nuclei_hits_new = db_get_modified(nuclei_hits, db['nuclei_hits'], index_fields, up_fields, compare.nuclei_hit)
+    logging.info("Send alert to selected messenger")
     nuclei_notify(nuclei_hits_new, hit_tostr)
 
 
@@ -202,7 +204,7 @@ def nuclei_notify(nuclei_hits_new, print_func, prefix=""):
     if notify_msg and len(notify_msg) > 5:
         alerter.notify(prefix + notify_msg)
     else:
-        alerter.notify(prefix + " No new changes found")
+        alerter.notify(prefix + "No new sites changes found")
 
 
 def passive_workflow(all_http_probes):
@@ -392,6 +394,7 @@ def main():
     new_port_probes = []
     if args.ports_olds:
         # otherports
+        logging.info("Checking ")
         port_probes = list(portprobes(old_scopes_subs, config['naabu']['ports']))
         port_probes, _ = threshold_filter(port_probes, "host", config['ports_weird_threshold'])
         new_port_probes = db_get_modified(port_probes, db['ports'], ['host', 'port'], ['host', 'ip', 'port', 'scope'],
